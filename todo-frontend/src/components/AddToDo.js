@@ -7,7 +7,7 @@ function AddToDo() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title) return;
-    await axios.post('http://localhost:3000/todos', { title });
+    await axios.post('http://10.227.31.248:3000/todos', { title });
     setTitle('');
     // Refresh the list or emit an event to notify ToDoList
   };

@@ -3,7 +3,7 @@ services:
   frontend:
     build: ./todo-frontend
     ports:
-      - "80:80"
+      - "8080:80"
   backend:
     build: ./todo-backend
     ports:
