@@ -1,0 +1,21 @@
+version: '2.2'
+services:
+  frontend:
+    build: ./todo-frontend
+    ports:
+      - "80:80"
+  backend:
+    build: ./todo-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGODB_URI=mongodb://database:27017/todo
+  database:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+volumes:
+  mongodb_data:
+
