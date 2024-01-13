@@ -3,11 +3,13 @@ import axios from 'axios';
 
 function AddToDo() {
   const [title, setTitle] = useState('');
+  //const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3000'; // Fallback to localhost if the env variable is not set	
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title) return;
-    await axios.post('http://10.227.31.248:3000/todos', { title });
+    await axios.post(`http://localhost:30001/todos`, { title });	  
+    //await axios.post('http://10.227.31.248:3000/todos', { title });
     setTitle('');
     // Refresh the list or emit an event to notify ToDoList
   };

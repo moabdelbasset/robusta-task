@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-backend
+  template:
+    metadata:
+      labels:
+        app: todo-backend
+    spec:
+      containers:
+      - name: todo-backend
+        image: moabdelhakim/todo-backend:1.0
+        ports:
+        - containerPort: 3000
+        env:  # Add the env field for environment variables
+        - name: MONGODB_URI
+          value: "mongodb://mongodb:27017/todo"
+
