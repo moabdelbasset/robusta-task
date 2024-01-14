@@ -13,4 +13,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "todo-app-chart.selectorLabels" . | nindent 4 }}
+    app: {{ include "todo-app-chart.fullname" . }}-backend
