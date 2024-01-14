@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+  labels:
+    {{- include "todo-app-chart.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.mongodb.service.type }}
+  ports:
+    - port: {{ .Values.mongodb.service.port }}
+      targetPort: {{ .Values.mongodb.service.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "todo-app-chart.selectorLabels" . | nindent 4 }}

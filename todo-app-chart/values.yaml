@@ -1,0 +1,41 @@
+# Default values for todo-app-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+# Default values for todo-app-chart.
+
+frontend:
+  replicaCount: 1
+  image:
+    repository: moabdelhakim/todo-frontend
+    pullPolicy: Always
+    tag: "1.4"
+  service:
+    type: NodePort
+    port: 80
+    targetPort: 80
+    nodePort: 30000
+
+backend:
+  replicaCount: 1
+  image:
+    repository: moabdelhakim/todo-backend
+    pullPolicy: Always
+    tag: "1.0"
+  service:
+    type: NodePort
+    port: 3000
+    targetPort: 3000
+    nodePort: 30001
+  env:  # Add the env field for environment variables
+    MONGODB_URI: "mongodb://mongodb:27017/todo"
+
+mongodb:
+  replicaCount: 1
+  image:
+    repository: mongo
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  service:
+    type: ClusterIP
+    port: 27017
+

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "todo-app-chart.fullname" . }}-mongodb
+  labels:
+    {{- include "todo-app-chart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.mongodb.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "todo-app-chart.fullname" . }}-mongodb
+  template:
+    metadata:
+      labels:
+        app: {{ include "todo-app-chart.fullname" . }}-mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: "{{ .Values.mongodb.image.repository }}:{{ .Values.mongodb.image.tag }}"
+          imagePullPolicy: {{ .Values.mongodb.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.mongodb.service.port }}
