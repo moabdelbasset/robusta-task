@@ -1,0 +1,81 @@
+---
+version: 2
+plan:
+  project-key: PROJ
+  key: PLAN
+  name: Plan
+stages:
+- Default Stage:
+    manual: false
+    final: false
+    jobs:
+    - Default Job
+Default Job:
+  key: JOB1
+  tasks:
+  - checkout:
+      force-clean-build: false
+      description: Checkout Default Repository
+  - script:
+      interpreter: SHELL
+      scripts:
+      - |-
+        ### Docker login
+        docker login --username=moabdelhakim --password=Password
+
+        ### Building the frontend Docker images
+        cd todo-frontend/
+        ls
+  - any-task:
+      plugin-key: com.atlassian.bamboo.plugins.bamboo-docker-plugin:task.docker.cli
+      configuration:
+        commandOption: build
+        repository: moabdelhakim/todo-frontend-cicd
+        dockerfileOption: existing
+        nocache: 'false'
+        save: 'false'
+        workingSubDirectory: todo-frontend
+  - any-task:
+      plugin-key: com.atlassian.bamboo.plugins.bamboo-docker-plugin:task.docker.cli
+      configuration:
+        commandOption: build
+        repository: moabdelhakim/todo-backend-cicd
+        dockerfileOption: existing
+        nocache: 'false'
+        save: 'false'
+        workingSubDirectory: todo-backend
+  artifact-subscriptions: []
+repositories:
+- repo:
+    scope: global
+triggers:
+- polling:
+    period: '180'
+branches:
+  create: manually
+  delete: never
+  link-to-jira: true
+notifications: []
+labels: []
+dependencies:
+  require-all-stages-passing: false
+  enabled-for-branches: true
+  block-strategy: none
+  plans: []
+other:
+  concurrent-build-plugin: system-default
+---
+version: 2
+plan:
+  key: PROJ-PLAN
+plan-permissions:
+- users:
+  - bamboo
+  permissions:
+  - view
+  - edit
+  - build
+  - clone
+  - admin
+  - view-configuration
+...

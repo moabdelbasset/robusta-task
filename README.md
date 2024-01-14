@@ -8,8 +8,10 @@ This guide provides detailed instructions on how to deploy the TodoApp using dif
 * Deployment on a single Cluster Kubernetes node. In production envrionment I would deploy the frontend in a DMZ zone and for the database and the backend I would deploy them in a separate environment which not reachable for outside user but can reach the frontend environment.
 * The application consistes of frontend, backend and Database.
 * I used MongoDB as a Database.
-* I used NodePort Service to access the application. In a production environment I would consider using LoadBalancer Service for the frontEnd
-* I used NodePort Service to access the backend. In a production environment I would consider using ClusterIP Service for the backend
+* I used NodePort Service to access the application. In a production environment I would consider using LoadBalancer Service for the frontEnd.
+* I used NodePort Service to access the backend. In a production environment I would consider using ClusterIP Service for the backend.
+* I ignored the storage part as the data is not important here.
+* I didn't create a diagram since all my deployment is on a single node cluster
 
 ## Deployment Using Docker with docker-compose
 
@@ -217,3 +219,24 @@ todo-app-chart-frontend   NodePort    10.101.6.159     <none>        80:30000/TC
 
 
 ## CI/CD Configuration
+
+I didn't have time to fully test the CI/CD but I did the configuration using Bamboo CI/CD. The steps I followed are:
+
+* Install Bamboo CI/CD
+* Create a Project and a Plan
+* Create linked repository that will link my repository on Github using Github account
+* In the plan configuration. I have single stage that has one Job and this Job consistes of multiple tasks
+* The first task will be the Source Code Checkout task ![Source Code Checkout task](./Images/scc.png)
+* Second task will be a script task to loging to my docker hub ![Script task](./Images/script.png)
+* Third task will be a docker task that is responsible for building the image and pushing it to the repository
+* Attached the CI-CD-config.yaml file for more information
+
+I tried playing with Gitlab but I didn't get anywhere but :) 
+
+
+## Issues faced during the project:
+
+* Due to lack of resources and using single node cluster. I faced problem accessing my app throught the web. To overcome this I had to use the localhost address
+* Firewall was dropping connection to the fronend application. To overcome this I had to allow the port 30001
+* There were some connection error between the backend and the database. To overcome this I added in code a troubleshooting line to print if the database connection was successfull or not and had to test connection by myself to verify that the backend can connect to the database
+* Couple of syntax error during the creation of helm chart since I separated the deployment of the frontend and backend and database so I had to separate the deployemnt and service templates
