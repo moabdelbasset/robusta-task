@@ -165,3 +165,55 @@ The frontend application is accessible on http://localhost:30000
 The backend application is accessible on http://localhost:30001/todos
 
 ![Backend on K8](./Images/backend-k8.png)
+
+
+## Deployment Using Helm
+
+### Step 1: Clone the Repository
+
+Clone the TodoApp repository to your local machine.
+
+```
+$ git clone [repository URL]
+$ cd robusta-task/todo-app-chart
+```
+
+### Step 2: Install the Helm Chart
+
+Install the Helm chart using the helm install command:
+
+```
+% helm install todo-app-chart . --values values.yaml
+NAME: todo-app-chart
+LAST DEPLOYED: Sun Jan 14 21:36:09 2024
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+```
+
+### Step 3: Verify the pods and services are up and running
+
+```
+% kubectl get pod
+NAME                                       READY   STATUS    RESTARTS   AGE
+todo-app-chart-backend-5cb54bfd96-wmcpf    1/1     Running   0          13s
+todo-app-chart-frontend-6d764d767b-sjr9t   1/1     Running   0          13s
+todo-app-chart-mongodb-7dfb95577-kx99x     1/1     Running   0          13s
+% kubectl get svc
+NAME                      TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+kubernetes                ClusterIP   10.96.0.1        <none>        443/TCP          30h
+mongodb                   ClusterIP   10.98.146.142    <none>        27017/TCP        8s
+todo-app-chart-backend    NodePort    10.111.194.199   <none>        3000:30001/TCP   8s
+todo-app-chart-frontend   NodePort    10.101.6.159     <none>        80:30000/TCP     8s
+```
+
+
+### Step 4: Access the application and test
+
+![Helm Frontend](./Images/helm-frontend.png)
+
+![Helm Backend](./Images/helm-backend.png)
+
+
+## CI/CD Configuration
