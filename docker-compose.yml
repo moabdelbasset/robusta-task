@@ -7,7 +7,7 @@ services:
   backend:
     build: ./todo-backend
     ports:
-      - "3000:3000"
+      - "30001:3000"
     environment:
       - MONGODB_URI=mongodb://database:27017/todo
   database:
